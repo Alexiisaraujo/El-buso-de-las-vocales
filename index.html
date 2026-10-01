@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Los buzones de las vocales</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#4a3b52;--rosa:#f2859f;--amar:#f7c935;--verde:#7bc96f;--azul:#4aa8f0;--lila:#a47be0}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"Baloo 2","Comic Sans MS",system-ui,sans-serif;color:var(--ink);text-align:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;
+background:linear-gradient(#9fdcff 0,#d8f3ff 55%,#bfe8a0 55%,#9bd67c 100%) fixed;overflow-x:hidden;
+padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+section{max-width:660px;margin:0 auto;padding:14px 12px 30px}
+[hidden]{display:none!important}
+h1{font-size:clamp(1.8rem,8vw,2.8rem);margin:8px 0;line-height:1.05;font-weight:800;text-shadow:0 3px 0 #fff}
+.sub{font-size:1.15rem;margin:0 0 14px}
+.btn{font:inherit;font-weight:800;font-size:1.2rem;color:#fff;border:0;border-radius:18px;padding:12px 26px;margin:6px;cursor:pointer;background:var(--b,var(--verde));box-shadow:0 6px 0 rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn:focus-visible,.ic:focus-visible{outline:4px solid var(--ink);outline-offset:2px}
+.btn small{display:block;font-size:.8rem;font-weight:600;opacity:.9}
+.niveles{display:flex;flex-direction:column;align-items:center;margin-top:10px}
+.niveles .btn{width:min(320px,90%)}
+.deco{display:flex;justify-content:center;gap:6px;margin:14px 0}
+.deco .buzon{width:56px;animation:flota 2.4s ease-in-out infinite}
+.deco .buzon:nth-child(2){animation-delay:.2s}.deco .buzon:nth-child(3){animation-delay:.4s}.deco .buzon:nth-child(4){animation-delay:.6s}.deco .buzon:nth-child(5){animation-delay:.8s}
+.record{font-weight:800;margin-top:12px;min-height:1.4em}
+.top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ic{font:inherit;font-size:1.4rem;width:46px;height:46px;border-radius:14px;border:0;background:#fff;box-shadow:0 4px 0 rgba(0,0,0,.2);cursor:pointer}
+.ic:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.barra{flex:1;height:20px;background:#fff;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amar),var(--verde));border-radius:10px;transition:width .35s}
+.marc{font-weight:800;font-size:1.1rem;white-space:nowrap}
+.consigna{background:#fff;border:3px solid var(--rosa);border-radius:18px;padding:6px 14px;font-size:1.05rem;margin:0 0 12px}
+.buzones{display:flex;justify-content:center;gap:6px;padding:16px 4px 0}
+.buzon{flex:1;max-width:112px;display:flex;flex-direction:column;align-items:center}
+.caja{position:relative;width:100%;aspect-ratio:3/4;border-radius:50% 50% 14px 14px/38% 38% 14px 14px;background:var(--c);border:3px solid rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:12%;box-shadow:inset -6px -6px 0 rgba(0,0,0,.08),inset 6px 6px 0 rgba(255,255,255,.25)}
+.caja::before{content:"";position:absolute;top:30%;left:14%;right:14%;height:6px;border-radius:3px;background:rgba(0,0,0,.35)}
+.caja::after{content:"";position:absolute;top:-16px;right:3px;width:12px;height:22px;background:var(--c);border:3px solid rgba(0,0,0,.15);border-radius:3px 3px 8px 8px;transform:rotate(18deg)}
+.ojos{position:absolute;top:40%;font-size:.8rem;letter-spacing:6px;opacity:.7}
+.letra{width:58%;aspect-ratio:1;border-radius:50%;background:#fff;color:var(--c);font-weight:800;font-size:clamp(1.4rem,7vw,2.4rem);display:flex;align-items:center;justify-content:center;filter:brightness(.78)}
+.poste{width:16%;height:40px;background:var(--c);filter:brightness(.92)}
+.flor{width:26px;height:26px;margin-top:-8px}
+.cuenta{min-height:1.4em;font-size:.9rem;font-weight:800}
+.buzon.ok{animation:salto .55s}.buzon.mal{animation:temblor .4s}.buzon.sobre .caja{transform:scale(1.1)}
+.msg{min-height:2.4em;font-size:1.15rem;font-weight:800;margin:12px 0 4px;text-shadow:0 2px 0 #fff}
+.mesa{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;min-height:130px;padding:12px;border:4px dashed #e48aa5;border-radius:20px;background:rgba(255,255,255,.9)}
+.carta{width:96px;padding:6px 4px 8px;background:#fff;border:4px solid var(--amar);border-radius:16px;cursor:grab;touch-action:none;box-shadow:0 5px 0 rgba(0,0,0,.15)}
+.carta img,.carta .fb{width:64px;height:64px;display:block;margin:0 auto 2px;font-size:3rem;line-height:64px;pointer-events:none}
+.carta b{font-size:1rem}
+.carta.arrastrando{position:fixed;z-index:50;cursor:grabbing;transform:scale(1.15) rotate(-5deg);box-shadow:0 14px 20px rgba(0,0,0,.28);pointer-events:none}
+.carta.vuelve{animation:temblor .4s}
+.estrellas{font-size:3.2rem;margin:10px 0}.estrellas span{display:inline-block;animation:pop .5s backwards}
+.estrellas span:nth-child(2){animation-delay:.25s}.estrellas span:nth-child(3){animation-delay:.5s}
+#conf{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99}
+@keyframes salto{40%{transform:translateY(-16px) scale(1.07)}}
+@keyframes temblor{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes flota{50%{transform:translateY(-8px)}}
+@keyframes pop{from{transform:scale(0) rotate(-90deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(min-width:480px){.carta{width:112px}.carta img,.carta .fb{width:76px;height:76px;line-height:76px}}
+</style>
+</head>
+<body>
+<canvas id="conf"></canvas>
+
+<section id="inicio">
+  <h1>Los buzones<br>de las vocales</h1>
+  <p class="sub">Llevá cada carta al buzón de su vocal 📬</p>
+  <div class="deco" id="deco"></div>
+  <div class="niveles">
+    <button class="btn" data-n="1" style="--b:var(--verde)">🌱 Fácil<small>5 cartas</small></button>
+    <button class="btn" data-n="2" style="--b:var(--azul)">🚀 Normal<small>10 cartas</small></button>
+    <button class="btn" data-n="3" style="--b:var(--lila)">🏆 Experto<small>15 cartas</small></button>
+    <button class="btn" data-n="5" style="--b:var(--rosa)">👑 Súper<small>25 cartas</small></button>
+  </div>
+  <div class="record" id="record"></div>
+</section>
+
+<section id="juego" hidden>
+  <div class="top">
+    <button class="ic" id="menu" aria-label="Volver al menú">🏠</button>
+    <div class="barra"><i id="prog"></i></div>
+    <span class="marc">⭐ <span id="n">0</span>/<span id="t">0</span></span>
+    <button class="ic" id="snd" aria-label="Sonido">🔊</button>
+  </div>
+  <p class="consigna">Arrastrá cada carta al buzón que empieza con la misma vocal.</p>
+  <div class="buzones" id="buzones"></div>
+  <div class="msg" id="msg" aria-live="polite"></div>
+  <div class="mesa" id="mesa"></div>
+</section>
+
+<section id="fin" hidden>
+  <h1>¡Terminaste!</h1>
+  <div class="estrellas" id="est"></div>
+  <p class="sub" id="res"></p>
+  <button class="btn" id="otra">🔁 Jugar otra vez</button>
+  <button class="btn" id="volver" style="--b:var(--azul)">🏠 Menú</button>
+</section>
+
+<script>
+const TW="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/";
+const VOC=[["A","#f2859f","1f337"],["E","#f7c935","1f33c"],["I","#8fcf5a","1f338"],["O","#4aa8f0","1f33b"],["U","#a47be0","1f33a"]];
+const CARTAS=[
+["🐝","1f41d","abeja","A"],["🚗","1f697","auto","A"],["✈️","2708","avión","A"],["🌳","1f333","árbol","A"],["💍","1f48d","anillo","A"],["🕷️","1f577","araña","A"],
+["🐘","1f418","elefante","E"],["⭐","2b50","estrella","E"],["🧹","1f9f9","escoba","E"],["🪜","1fa9c","escalera","E"],["🦂","1f982","escorpión","E"],["🪞","1fa9e","espejo","E"],
+["🏝️","1f3dd","isla","I"],["🧲","1f9f2","imán","I"],["🦎","1f98e","iguana","I"],["⛪","26ea","iglesia","I"],["🐛","1f41b","insecto","I"],["💉","1f489","inyección","I"],
+["🐻","1f43b","oso","O"],["👁️","1f441","ojo","O"],["🐑","1f411","oveja","O"],["👂","1f442","oreja","O"],["🌊","1f30a","ola","O"],["🛸","1f6f8","ovni","O"],
+["🍇","1f347","uva","U"],["🦄","1f984","unicornio","U"],["💅","1f485","uña","U"],["🌌","1f30c","universo","U"],["1️⃣","31-20e3","uno","U"],["🗳️","1f5f3","urna","U"]];
+const $=id=>document.getElementById(id);
+let nivel=2,aciertos=0,total=0,errores=0,cuentas={};
+
+/* ---------- Imágenes de internet (con emoji de respaldo) ---------- */
+function img(cp,emo){return `<img src="${TW}${cp}.svg" alt="" draggable="false" onerror="this.outerHTML='<span class=&quot;fb&quot;>${emo}</span>'">`}
+
+/* ---------- Sonidos (Web Audio, sin archivos) ---------- */
+let ctx,sonido=true;
+function audio(){try{if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==="suspended")ctx.resume()}catch(e){}}
+function tono(f,d=.15,tipo="sine",t=0,v=.2){
+  if(!sonido||!ctx)return;
+  const o=ctx.createOscillator(),g=ctx.createGain(),s=ctx.currentTime+t;
+  o.type=tipo;o.frequency.value=f;
+  g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);
+  o.connect(g);g.connect(ctx.destination);o.start(s);o.stop(s+d+.02);
+}
+const SND={
+  pick:()=>tono(700,.08,"square",0,.07),
+  ok:()=>[523,659,784,1047].forEach((f,i)=>tono(f,.2,"triangle",i*.08,.22)),
+  mal:()=>{tono(190,.25,"sawtooth",0,.14);tono(140,.35,"sawtooth",.13,.14)},
+  win:()=>[523,659,784,659,784,1047,1319].forEach((f,i)=>tono(f,.3,"triangle",i*.13,.25)),
+  click:()=>tono(520,.07,"sine",0,.15)
+};
+function hablar(t){if(!sonido)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="es-AR";u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+document.addEventListener("pointerdown",audio);
+
+/* ---------- Confeti ---------- */
+const cv=$("conf"),cx=cv.getContext("2d");let parts=[];
+function confeti(){
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cols=["#f2859f","#f7c935","#8fcf5a","#4aa8f0","#a47be0"];
+  for(let i=0;i<140;i++)parts.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*14,vy:Math.random()*-14-3,s:6+Math.random()*7,c:cols[i%5],r:Math.random()*6});
+  (function f(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    parts=parts.filter(p=>p.y<cv.height+20);
+    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.r+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cx.restore()});
+    if(parts.length)requestAnimationFrame(f);
+  })();
+}
+
+/* ---------- Pantallas ---------- */
+function ir(id){["inicio","juego","fin"].forEach(s=>$(s).hidden=s!==id);scrollTo(0,0)}
+function mostrarRecord(){
+  let m=[];
+  try{[1,2,3,5].forEach(n=>{const r=localStorage.getItem("vocales-"+n);if(r)m.push({1:"🌱",2:"🚀",3:"🏆",5:"👑"}[n]+" "+"⭐".repeat(+r))})}catch(e){}
+  $("record").textContent=m.length?"Tus mejores: "+m.join("   "):"";
+}
+function bz(l,c,extra=""){return `<div class="buzon" data-v="${l}" style="--c:${c}"><div class="caja"><span class="ojos">● ●</span><div class="letra">${l}</div></div><div class="poste"></div>${extra}</div>`}
+$("deco").innerHTML=VOC.map(([l,c,f])=>bz(l,c)).join("");
+
+function mezclar(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function jugar(n){
+  nivel=n;aciertos=0;errores=0;cuentas={};
+  const sel=VOC.flatMap(([l])=>mezclar(CARTAS.filter(c=>c[3]===l)).slice(0,n));
+  total=sel.length;
+  $("n").textContent=0;$("t").textContent=total;$("prog").style.width="0";$("msg").textContent="";
+  $("buzones").innerHTML=VOC.map(([l,c,f])=>bz(l,c,`<div class="flor">${img(f,"🌸")}</div><div class="cuenta" id="c${l}"></div>`)).join("");
+  $("mesa").innerHTML="";
+  mezclar(sel).forEach(([e,cp,p,v])=>{
+    const d=document.createElement("div");
+    d.className="carta";d.dataset.v=v;d.dataset.p=p;
+    d.innerHTML=img(cp,e)+`<b>${p}</b>`;
+    d.addEventListener("pointerdown",ev=>empezar(ev,d));
+    $("mesa").appendChild(d);
+  });
+  ir("juego");
+}
+
+/* ---------- Arrastrar ---------- */
+function bajo(x,y){return document.elementsFromPoint(x,y).find(e=>e.classList&&e.classList.contains("buzon"))}
+function empezar(ev,d){
+  ev.preventDefault();SND.pick();hablar(d.dataset.p);
+  const r=d.getBoundingClientRect(),ox=ev.clientX-r.left,oy=ev.clientY-r.top;
+  const hueco=document.createElement("div");hueco.style.cssText=`width:${r.width}px;height:${r.height}px`;
+  d.after(hueco);d.classList.add("arrastrando");d.style.width=r.width+"px";
+  let sobre=null;
+  const mover=e=>{
+    d.style.left=(e.clientX-ox)+"px";d.style.top=(e.clientY-oy)+"px";
+    const b=bajo(e.clientX,e.clientY);
+    if(b!==sobre){sobre&&sobre.classList.remove("sobre");sobre=b;b&&b.classList.add("sobre")}
+  };
+  mover(ev);
+  const soltar=e=>{
+    removeEventListener("pointermove",mover);removeEventListener("pointerup",soltar);removeEventListener("pointercancel",soltar);
+    sobre&&sobre.classList.remove("sobre");
+    const b=bajo(e.clientX,e.clientY);
+    d.classList.remove("arrastrando");d.style.cssText="";
+    if(b&&b.dataset.v===d.dataset.v){acertar(d,b,hueco)}
+    else{
+      hueco.remove();d.classList.add("vuelve");setTimeout(()=>d.classList.remove("vuelve"),400);
+      if(b){errores++;SND.mal();b.classList.add("mal");setTimeout(()=>b.classList.remove("mal"),400);
+        $("msg").textContent="¡Casi! "+d.dataset.p+" no empieza con "+b.dataset.v+". Probá de nuevo."}
+    }
+  };
+  addEventListener("pointermove",mover);addEventListener("pointerup",soltar);addEventListener("pointercancel",soltar);
+}
+
+function acertar(d,b,hueco){
+  const v=d.dataset.v,p=d.dataset.p;
+  d.remove();hueco.remove();aciertos++;cuentas[v]=(cuentas[v]||0)+1;
+  $("n").textContent=aciertos;$("prog").style.width=(aciertos/total*100)+"%";
+  $("c"+v).textContent="✉️".repeat(cuentas[v]);
+  b.classList.add("ok");setTimeout(()=>b.classList.remove("ok"),550);
+  SND.ok();
+  const f=["¡Muy bien!","¡Genial!","¡Eso es!","¡Bravo!"];
+  $("msg").textContent=f[aciertos%4]+" "+p+" empieza con "+v;
+  if(aciertos===total)setTimeout(terminar,900);
+}
+
+function terminar(){
+  const e=errores===0?3:errores<=2?2:1;
+  $("est").innerHTML=[0,1,2].map(i=>`<span>${i<e?"⭐":"☆"}</span>`).join("");
+  $("res").textContent=errores===0?"¡Sin ningún error! ¡Sos un campeón de las vocales!":"Te equivocaste "+errores+(errores===1?" vez":" veces")+". ¡Seguí practicando!";
+  try{const k="vocales-"+nivel;if(e>(+localStorage.getItem(k)||0))localStorage.setItem(k,e)}catch(x){}
+  ir("fin");SND.win();confeti();hablar("¡Felicitaciones! Terminaste");
+}
+
+/* ---------- Botones ---------- */
+document.querySelectorAll(".niveles .btn").forEach(b=>b.addEventListener("click",()=>{SND.click();jugar(+b.dataset.n)}));
+$("otra").addEventListener("click",()=>{SND.click();jugar(nivel)});
+$("volver").addEventListener("click",()=>{SND.click();mostrarRecord();ir("inicio")});
+$("menu").addEventListener("click",()=>{SND.click();mostrarRecord();ir("inicio")});
+$("snd").addEventListener("click",()=>{sonido=!sonido;$("snd").textContent=sonido?"🔊":"🔇";if(sonido)SND.click();else try{speechSynthesis.cancel()}catch(e){}});
+mostrarRecord();
+</script>
+</body>
+</html>
