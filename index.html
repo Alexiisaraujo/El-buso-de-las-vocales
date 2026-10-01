@@ -18,6 +18,8 @@ h1{font-size:clamp(1.8rem,8vw,2.8rem);margin:8px 0;line-height:1.05;font-weight:
 .sub{font-size:1.15rem;margin:0 0 14px}
 .btn{font:inherit;font-weight:800;font-size:1.2rem;color:#fff;border:0;border-radius:18px;padding:12px 26px;margin:6px;cursor:pointer;background:var(--b,var(--verde));box-shadow:0 6px 0 rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
 .btn:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn:disabled{filter:grayscale(1);opacity:.65;cursor:not-allowed;box-shadow:0 6px 0 rgba(0,0,0,.2)}
+.btn:disabled:active{transform:none;box-shadow:0 6px 0 rgba(0,0,0,.2)}
 .btn:focus-visible,.ic:focus-visible{outline:4px solid var(--ink);outline-offset:2px}
 .btn small{display:block;font-size:.8rem;font-weight:600;opacity:.9}
 .niveles{display:flex;flex-direction:column;align-items:center;margin-top:10px}
@@ -95,6 +97,7 @@ h1{font-size:clamp(1.8rem,8vw,2.8rem);margin:8px 0;line-height:1.05;font-weight:
   <h1>¡Terminaste!</h1>
   <div class="estrellas" id="est"></div>
   <p class="sub" id="res"></p>
+  <button class="btn" id="sig" style="--b:var(--amar)">➡️ Siguiente nivel</button>
   <button class="btn" id="otra">🔁 Jugar otra vez</button>
   <button class="btn" id="volver" style="--b:var(--azul)">🏠 Menú</button>
 </section>
@@ -109,7 +112,17 @@ const CARTAS=[
 ["🐻","1f43b","oso","O"],["👁️","1f441","ojo","O"],["🐑","1f411","oveja","O"],["👂","1f442","oreja","O"],["🌊","1f30a","ola","O"],["🛸","1f6f8","ovni","O"],
 ["🍇","1f347","uva","U"],["🦄","1f984","unicornio","U"],["💅","1f485","uña","U"],["🌌","1f30c","universo","U"],["1️⃣","31-20e3","uno","U"],["🗳️","1f5f3","urna","U"]];
 const $=id=>document.getElementById(id);
-let nivel=2,aciertos=0,total=0,errores=0,cuentas={};
+let nivel=1,aciertos=0,total=0,errores=0,cuentas={};
+const ORDEN=[1,2,3,5],NOM=["Fácil","Normal","Experto","Súper"];
+let desb=0;try{desb=+localStorage.getItem("vocales-desb")||0}catch(e){}
+function bloqueos(){
+  document.querySelectorAll(".niveles .btn").forEach(b=>{
+    const i=ORDEN.indexOf(+b.dataset.n),sm=b.querySelector("small");
+    if(!sm.dataset.o)sm.dataset.o=sm.textContent;
+    const lock=i>desb;b.disabled=lock;
+    sm.textContent=lock?"🔒 Completá "+NOM[i-1]:sm.dataset.o;
+  });
+}
 
 /* ---------- Imágenes de internet (con emoji de respaldo) ---------- */
 function img(cp,emo){return `<img src="${TW}${cp}.svg" alt="" draggable="false" onerror="this.outerHTML='<span class=&quot;fb&quot;>${emo}</span>'">`}
@@ -150,7 +163,7 @@ function confeti(){
 
 /* ---------- Pantallas ---------- */
 function ir(id){["inicio","juego","fin"].forEach(s=>$(s).hidden=s!==id);scrollTo(0,0)}
-function mostrarRecord(){
+function mostrarRecord(){bloqueos();
   let m=[];
   try{[1,2,3,5].forEach(n=>{const r=localStorage.getItem("vocales-"+n);if(r)m.push({1:"🌱",2:"🚀",3:"🏆",5:"👑"}[n]+" "+"⭐".repeat(+r))})}catch(e){}
   $("record").textContent=m.length?"Tus mejores: "+m.join("   "):"";
@@ -223,11 +236,15 @@ function terminar(){
   $("est").innerHTML=[0,1,2].map(i=>`<span>${i<e?"⭐":"☆"}</span>`).join("");
   $("res").textContent=errores===0?"¡Sin ningún error! ¡Sos un campeón de las vocales!":"Te equivocaste "+errores+(errores===1?" vez":" veces")+". ¡Seguí practicando!";
   try{const k="vocales-"+nivel;if(e>(+localStorage.getItem(k)||0))localStorage.setItem(k,e)}catch(x){}
+  const i=ORDEN.indexOf(nivel),hay=i+1<ORDEN.length;
+  if(hay&&desb<i+1){desb=i+1;try{localStorage.setItem("vocales-desb",desb)}catch(x){}}
+  $("sig").hidden=!hay;if(hay)$("sig").textContent="➡️ Siguiente: "+NOM[i+1];
   ir("fin");SND.win();confeti();hablar("¡Felicitaciones! Terminaste");
 }
 
 /* ---------- Botones ---------- */
 document.querySelectorAll(".niveles .btn").forEach(b=>b.addEventListener("click",()=>{SND.click();jugar(+b.dataset.n)}));
+$("sig").addEventListener("click",()=>{SND.click();jugar(ORDEN[ORDEN.indexOf(nivel)+1])});
 $("otra").addEventListener("click",()=>{SND.click();jugar(nivel)});
 $("volver").addEventListener("click",()=>{SND.click();mostrarRecord();ir("inicio")});
 $("menu").addEventListener("click",()=>{SND.click();mostrarRecord();ir("inicio")});
